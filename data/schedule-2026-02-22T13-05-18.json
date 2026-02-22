@@ -1,0 +1,178 @@
+{
+  "nama_sekolah": "SMK Negeri 6 Malang",
+  "tahun_pelajaran": "2025/2026",
+  "semester": [
+    {
+      "nama": "Ganjil",
+      "bulan": [
+        {
+          "nama": "Juli 2025",
+          "hari_efektif": 14,
+          "kegiatan": [
+            {
+              "tanggal": "01 s.d 11",
+              "keterangan": "Libur Semester Genap 24/25"
+            }
+          ]
+        },
+        {
+          "nama": "Agustus 2025",
+          "hari_efektif": 24,
+          "kegiatan": []
+        },
+        {
+          "nama": "September 2025",
+          "hari_efektif": 24,
+          "kegiatan": [
+            {
+              "tanggal": "22 s.d 26",
+              "keterangan": "Asesmen Lingkup Materi (PTS)"
+            },
+            {
+              "tanggal": "29 s.d 30",
+              "keterangan": "Input Rapor Tengah Semester"
+            }
+          ]
+        },
+        {
+          "nama": "Oktober 2025",
+          "hari_efektif": 23,
+          "kegiatan": [
+            {
+              "tanggal": "01 s.d 02",
+              "keterangan": "Cetak Rapor Tengah Semester"
+            },
+            {
+              "tanggal": "15 s.d 24",
+              "keterangan": "Implementasi PS"
+            },
+            {
+              "tanggal": "27 s.d 28",
+              "keterangan": "Pekan Karya P5"
+            }
+          ]
+        },
+        {
+          "nama": "November 2025",
+          "hari_efektif": 20,
+          "kegiatan": [
+            {
+              "tanggal": "17 s.d 21",
+              "keterangan": "UMT, UMK, Try Out Kelas XII"
+            },
+            {
+              "tanggal": "24 s.d 28",
+              "keterangan": "UPK Kolaborasi"
+            }
+          ]
+        },
+        {
+          "nama": "Desember 2025",
+          "hari_efektif": 15,
+          "kegiatan": [
+            {
+              "tanggal": "18 s.d 19",
+              "keterangan": "Cetak Rapor Akhir Semester"
+            },
+            {
+              "tanggal": "22 s.d 31",
+              "keterangan": "Libur Semester Ganjil dan penerimaan rapor"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nama": "Genap",
+      "bulan": [
+        {
+          "nama": "Januari 2026",
+          "hari_efektif": 20,
+          "kegiatan": []
+        },
+        {
+          "nama": "Februari 2026",
+          "hari_efektif": 19,
+          "kegiatan": [
+            {
+              "tanggal": "20 s.d 24",
+              "keterangan": "Pembelajaran Tatap Muka (PTM)"
+            },
+            {
+              "tanggal": "25 s.d 26",
+              "keterangan": "Libur Permulaan Puasa"
+            }
+          ]
+        },
+        {
+          "nama": "Maret 2026",
+          "hari_efektif": 20,
+          "kegiatan": [
+            {
+              "tanggal": "11 s.d 13",
+              "keterangan": "Penerimaan Peserta Didik Baru"
+            },
+            {
+              "tanggal": "14 s.d 15",
+              "keterangan": "Implementasi PS"
+            }
+          ]
+        },
+        {
+          "nama": "April 2026",
+          "hari_efektif": 21,
+          "kegiatan": [
+            {
+              "tanggal": "01 s.d 03",
+              "keterangan": "Pembelajaran Berbasis Proyek Kelas X, XI dan XII Progam 4 Th"
+            },
+            {
+              "tanggal": "24 s.d 27",
+              "keterangan": "Implementasi PS Proyek Kewirausahaan Kelas XII"
+            },
+            {
+              "tanggal": "28 s.d 29",
+              "keterangan": "UPK Kolaborasi"
+            },
+            {
+              "tanggal": "30",
+              "keterangan": "UMK Kolaborasi"
+            }
+          ]
+        },
+        {
+          "nama": "Mei 2026",
+          "hari_efektif": 20,
+          "kegiatan": [
+            {
+              "tanggal": "02 s.d 06",
+              "keterangan": "Asesmen Lingkup Materi (PTS)"
+            },
+            {
+              "tanggal": "09 s.d 10",
+              "keterangan": "Entry Nilai Akhir Semester"
+            }
+          ]
+        },
+        {
+          "nama": "Juni 2026",
+          "hari_efektif": 13,
+          "kegiatan": [
+            {
+              "tanggal": "01 s.d 02",
+              "keterangan": "UPK Kolaborasi, Ujian dan entry nilai"
+            },
+            {
+              "tanggal": "15 s.d 18",
+              "keterangan": "Cetak Rapor Tengah Semester"
+            },
+            {
+              "tanggal": "22 s.d 30",
+              "keterangan": "Implementasi PS Proyek Kewirausahaan (Peserta Didik)"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

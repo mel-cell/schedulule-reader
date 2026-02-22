@@ -1,96 +1,106 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import Groq from "groq-sdk";
 import * as fs from "fs";
 import * as dotenv from "dotenv";
 import * as path from "path";
 
 dotenv.config();
 
-const apiKey = process.env.GEMINI_API_KEY;
-const imagePath = process.env.IMAGE_PATH || "uploaded_media.png";
+const apiKey = process.env.GROQ_API_KEY;
+const imagePath = process.env.IMAGE_PATH || "assets/image.png";
 
 if (!apiKey) {
-  console.error("Please set GEMINI_API_KEY in .env file");
+  console.error("Please set GROQ_API_KEY in .env file");
   process.exit(1);
 }
 
-const genAI = new GoogleGenerativeAI(apiKey);
-
-// Helper function to convert local file to GoogleGenerativeAI.Part object
-function fileToGenerativePart(path: string, mimeType: string) {
-  return {
-    inlineData: {
-      data: Buffer.from(fs.readFileSync(path)).toString("base64"),
-      mimeType,
-    },
-  };
-}
+const groq = new Groq({ apiKey });
 
 async function run() {
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    // Read the image file and convert to base64
+    const imageBase64 = fs.readFileSync(imagePath).toString("base64");
+    const mimeType = "image/png"; // Default to png as requested
 
-    const prompt = `
-      Extract the school schedule data from the provided images (Calendar of SMK Negeri 6 Malang 2025/2026).
-      The images contain two semesters (Ganjil and Genap).
-      
-      Please extract all months from July 2025 to June 2026.
-      For each month, provide:
-      1. Month name and Year.
-      2. "Hari Efektif (HE)" value.
-      3. List of "Kegiatan" (Activities) from the table below the calendar, including the range of dates and the description.
-      4. If possible, identify specific holiday dates or special events highlighted in the calendar grid (e.g., dates with red background are usually holidays).
+    console.log("Processing image with Groq... please wait.");
 
-      Return the data strictly in JSON format with the following structure:
-      {
-        "nama_sekolah": "SMK Negeri 6 Malang",
-        "tahun_pelajaran": "2025/2026",
-        "semester": [
-          {
-            "nama": "Ganjil",
-            "bulan": [
-              {
-                "nama": "Juli 2025",
-                "hari_efektif": 14,
-                "kegiatan": [
-                  { "tanggal": "01 s.d 11", "keterangan": "Libur Semester Genap 24/25" },
-                  ...
-                ]
+    const chatCompletion = await groq.chat.completions.create({
+      messages: [
+        {
+          role: "user",
+          content: [
+            {
+              type: "text",
+              text: `
+                Extract the school schedule data from the provided image (Calendar of SMK Negeri 6 Malang 2025/2026).
+                The image contains two semesters (Ganjil and Genap).
+                
+                Please extract all months from July 2025 to June 2026.
+                For each month, provide:
+                1. Month name and Year.
+                2. "Hari Efektif (HE)" value (found at the bottom of each calendar table).
+                3. List of "Kegiatan" (Activities) from the "Keterangan" table below the calendar, including the range of dates and the description.
+
+                Return the data strictly in JSON format with the following structure:
+                {
+                  "nama_sekolah": "SMK Negeri 6 Malang",
+                  "tahun_pelajaran": "2025/2026",
+                  "semester": [
+                    {
+                      "nama": "Ganjil",
+                      "bulan": [
+                        {
+                          "nama": "Juli 2025",
+                          "hari_efektif": 14,
+                          "kegiatan": [
+                            { "tanggal": "01 s.d 11", "keterangan": "Libur Semester Genap 24/25" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+                
+                Return ONLY the JSON block.
+              `,
+            },
+            {
+              type: "image_url",
+              image_url: {
+                url: `data:${mimeType};base64,${imageBase64}`,
               },
-              ...
-            ]
-          },
-          ...
-        ]
-      }
-      
-      Make sure to capture all 12 months.
-    `;
+            },
+          ],
+        },
+      ],
+      model: "meta-llama/llama-4-scout-17b-16e-instruct",
+      temperature: 0.1,
+      max_tokens: 8192,
+      top_p: 1,
+      stream: false,
+      response_format: { type: "json_object" },
+      stop: null,
+    });
 
-    const imagePart = fileToGenerativePart(imagePath, "image/png");
-
-    console.log("Processing image... please wait.");
-    const result = await model.generateContent([prompt, imagePart]);
-    const response = await result.response;
-    const text = response.text();
-
-    // Clean up response if it contains markdown code blocks
-    const jsonMatch = text.match(/```json\n([\s\S]*?)\n```/) || text.match(/```\n([\s\S]*?)\n```/);
-    const jsonString = (jsonMatch ? jsonMatch[1] : text) || "";
-
+    const text = chatCompletion.choices[0]?.message?.content || "";
+    
     try {
-      const jsonData = JSON.parse(jsonString);
+      const jsonData = JSON.parse(text);
       const dataDir = path.join(process.cwd(), "data");
       
-      // Create data directory if it doesn't exist
       if (!fs.existsSync(dataDir)) {
         fs.mkdirSync(dataDir, { recursive: true });
       }
 
-      const outputPath = path.join(dataDir, "schedule.json");
+      // Generate filename based on current date and time
+      const now = new Date();
+      const timestamp = now.toISOString().replace(/[:.]/g, '-').slice(0, 19); 
+      const fileName = `schedule-${timestamp}.json`;
+      
+      const outputPath = path.join(dataDir, fileName);
       fs.writeFileSync(outputPath, JSON.stringify(jsonData, null, 2));
       console.log(`Success! Data saved to ${outputPath}`);
     } catch (parseError) {
-      console.error("Failed to parse JSON response from AI.");
+      console.error("Failed to parse JSON response from Groq.");
       console.log("Raw Response:", text);
     }
   } catch (error) {
