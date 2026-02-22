@@ -1,0 +1,24 @@
+{
+  "name": "schedule-reader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "NODE_OPTIONS='--loader ts-node/esm --no-warnings' node src/index.ts",
+    "dev": "NODE_OPTIONS='--loader ts-node/esm --no-warnings' node src/index.ts"
+  },
+  "bugs": {
+    "url": "https://github.com/mel-cell/schedulule-reader/issues"
+  },
+  "homepage": "https://github.com/mel-cell/schedulule-reader#readme",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "dotenv": "^17.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
